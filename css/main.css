@@ -1330,7 +1330,7 @@ body._lock {
 .statistics {
   opacity: 0;
 }
-.statistics.loaded {
+._loaded .statistics {
   opacity: 1;
   -webkit-transition: opacity 0.3s ease 1.2s;
   transition: opacity 0.3s ease 1.2s;
@@ -1514,9 +1514,19 @@ body._lock {
     filter: blur(3px);
   }
 }
+@media (max-width: 31.25em) {
+  .decor-main__icon {
+    opacity: 0.5;
+  }
+}
 .decor-main__icon--1 {
   top: 5%;
   left: 18%;
+}
+@media (max-width: 31.25em) {
+  .decor-main__icon--1 {
+    display: none;
+  }
 }
 .decor-main__icon--2 {
   top: 10%;

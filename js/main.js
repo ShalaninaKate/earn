@@ -406,7 +406,7 @@ if (animItems.length > 0) {
 
       // Условие: элемент должен быть полностью в зоне видимости
       const animItemPoint = window.innerHeight - animItemHeight;
-      if (pageYOffset > animItemOffset - animItemPoint + 30 && pageYOffset < animItemOffset + animItemHeight) {
+      if (pageYOffset > animItemOffset - animItemPoint + 10 && pageYOffset < animItemOffset + animItemHeight) {
         animItem.classList.add('loaded');
       } else {
         if (!animItem.classList.contains('_anim-no-hide')) {
