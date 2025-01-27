@@ -1063,6 +1063,67 @@ paths.forEach((path, index) => {
   const isReverse = index === 2 || index === 5; // Инвертируем движение для третьего пути
   moveIcons(performance.now(), path, iconsGroups[index], durations[index], distancesBetweenIcons[index], isReverse);
 });
+function digitsCounter() {
+  // Обнуление значений
+  if (document.querySelectorAll("[data-digits-counter]").length) {
+    document.querySelectorAll("[data-digits-counter]").forEach(element => {
+      element.dataset.digitsCounter = element.innerHTML;
+      element.innerHTML = `0`;
+    });
+  }
+
+  // Функция анимации счетчика
+  function digitsCountersAnimate(digitsCounter) {
+    let startTimestamp = null;
+    const duration = parseInt(digitsCounter.dataset.digitsCounterSpeed) || 1000; // Скорость анимации (по умолчанию 1000 мс)
+    const startValue = parseInt(digitsCounter.dataset.digitsCounter); // Конечное значение
+    const startPosition = 0; // Начальное значение (0)
+
+    const step = timestamp => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1); // Прогресс (0 до 1)
+      digitsCounter.innerHTML = Math.floor(progress * (startPosition + startValue)); // Текущее значение
+
+      if (progress < 1) {
+        window.requestAnimationFrame(step); // Продолжение анимации
+      }
+    };
+    window.requestAnimationFrame(step); // Запуск анимации
+  }
+
+  // Настройка Intersection Observer
+  function digitsCountersInit() {
+    const observerOptions = {
+      threshold: 0.5 // Половина элемента должна быть видна
+    };
+    const observerCallback = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Если элемент в зоне видимости
+          const target = entry.target;
+
+          // Добавляем задержку в 2 секунды перед началом анимации
+          setTimeout(() => {
+            digitsCountersAnimate(target); // Запуск анимации
+            observer.unobserve(target); // Снять наблюдение после анимации
+          }, 1200); // Задержка в 2000 мс (2 секунды)
+        }
+      });
+    };
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Подключаем observer к каждому элементу с data-digits-counter
+    document.querySelectorAll("[data-digits-counter]").forEach(element => {
+      observer.observe(element);
+    });
+  }
+
+  // Запуск функции
+  digitsCountersInit();
+}
+document.addEventListener("DOMContentLoaded", () => {
+  digitsCounter();
+});
 })();
 
 /******/ })()
